@@ -7,10 +7,10 @@ const Layout = () => {
         <>
             <Header />
             <MainNav />
-            <main>
+            <main className="bg-blush-light p-4 mx-4 sm:w-4/5 sm:mx-auto max-w-5xl">
                 <Outlet />
             </main>
-            <footer className="bg-blue-deep text-light text-center text-sm p-2 mb-16 md:mb-0">Projektuppgift i kursen Fördjupad frontendutveckling skapad av <a className="text-dust-light hover:underline" href="mailto:kacl1200@student.miun.se">Kajsa Classon</a>, VT25.</footer>
+            <footer className="bg-blush-deep text-center font-serif text-sm p-2 mb-16 md:mb-0">Projektuppgift i kursen Fördjupad frontendutveckling skapad av <a className="font-bold hover:underline" href="mailto:kacl1200@student.miun.se">Kajsa Classon</a>, VT25.</footer>
         </>
     )
 }
