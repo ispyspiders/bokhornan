@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    @apply text-dark;
+}
+
+body{
+    background-color: #EBD5D5;
+}
+
+/* Styling av aktiv navlink */
+.active span :first-child{
+    color: #FD6378;
+}
+
+.active:hover {
+    @apply text-dark !important;
+}
+
+@media (min-width: 768px) {
+    .active {
+        @apply font-medium
+    }
+
+    .active span :first-child{
+        @apply text-dark
+    }
+}
