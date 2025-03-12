@@ -1,16 +1,41 @@
 import { NavLink } from "react-router-dom"
-import { ArrowLeft, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
-import { useState } from "react"
+import { ArrowLeft, Books, CaretDown, CaretUp, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
+import { useState, useEffect, useRef } from "react"
 import { useAuth } from "../context/AuthContext"
 
 const MainNav = () => {
     // States
     const [showMenu, setShowMenu] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const menuRef = useRef<HTMLUListElement|null>(null);
+
+    useEffect(()=> {
+        // Hantera klick utanför dropdownmenu: stäng dropdown
+        const handler = (event:MouseEvent|TouchEvent) => {
+            if (
+                showDropdown &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node)
+            ) {
+                setShowDropdown(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        document.addEventListener("touchstart", handler);
+        return () =>{
+            document.removeEventListener("mousedown", handler);
+            document.removeEventListener("touchstart", handler);
+        };
+    }, [showDropdown]);
 
     const { user, logout } = useAuth();
 
     const toggleMobileMenu = () => {
         setShowMenu(!showMenu);
+    }
+    const toggleDropdownMenu = () => {
+        setShowDropdown(!showDropdown);
     }
 
     return <>
@@ -27,8 +52,9 @@ const MainNav = () => {
                     </NavLink>
                 </li>
             </ul >
-<div className="h-px w-4/5 mx-auto mt-4 bg-blush-mid md:hidden">
-</div>
+
+            <div className="h-px w-4/5 mx-auto mt-4 bg-blush-mid md:hidden"></div>
+
             {
                 !user ?
                     <div className="flex content-center justify-start items-center px-16 md:px-8 text-xl md:text-base">
@@ -40,20 +66,61 @@ const MainNav = () => {
                         </NavLink>
                     </div>
                     :
-                    <div className="flex content-center justify-between items-center px-16 md:px-8 text-sm">
-                        <div className="my-2 text-xl md:me-4 md:text-base">
-                            <NavLink to="/profile" onClick={toggleMobileMenu} className="hover:text-coral-vivid">
-                                <span className="flex items-center">
-                                    <UserCircle size={24} className="me-2" />
-                                    {user.name}
-                                </span>
-                            </NavLink>
+                    <div className="grid grid-cols-3 items-center px-11 md:px-8 text-sm md:flex">
+                        {/* Inloggad användare i meny */}
+                        {/* Som text för små skärmar */}
+                        <div className="my-2 ms-4 text-xl col-span-2  md:hidden">
+                            <span className="flex items-center">
+                                <UserCircle size={24} className="me-2" />
+                                {user.name}
+                                <CaretDown weight="fill" size={14} className="hidden ms-2 md:block" />
+                            </span>
                         </div>
-                        <div className="flex items-center">
+                        {/* Som knapp som togglar dropdown för medelstora skärmar och uppåt */}
+                        <button onClick={toggleDropdownMenu} id="dropdown-button" aria-controls="dropdown-menu" aria-haspopup="true" aria-expanded={showDropdown} className="hidden my-2 ms-4 text-xl col-span-2 md:block  md:me-4 md:text-base">
+                            <span className="flex items-center">
+                                <UserCircle size={24} className="me-2" />
+                                {user.name}
+                                {/* Caret upp eller ned beroende på om öppen */}
+                                {showDropdown ?
+                                    <CaretUp weight="fill" size={14} className="hidden ms-2 md:block" />
+                                    :
+                                    <CaretDown weight="fill" size={14} className="hidden ms-2 md:block" />
+                                }
+                            </span>
+                        </button>
+
+
+                        {/* Logga ut */}
+                        <div className="flex items-center mt-2 row-span-all md:mt-0">
                             <p className="pe-2 text-sm font-light">Inte du?</p>
                             <button onClick={logout} className="text-sm font-normal hover:text-coral-vivid">Logga ut</button>
                         </div>
+
+                        <div className="h-px w-full mx-auto mt-4 bg-blush-mid col-span-full md:hidden"></div>
+
+                        {/* md: Dropdown */}
+                        <ul ref={menuRef} id="userDropdown" role="menu" aria-labelledby="dropdown-button" className={`col-span-2 ms-4 text-xl font-light
+                        md:bg-light md:rounded-md md:border-2 md:border-blush-mid md:absolute md:top-16 md:py-2 ${showDropdown ? '' : 'md:hidden'}`}>
+                            <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
+                                <NavLink to="/profile" onClick={() => { toggleMobileMenu; toggleDropdownMenu }} className="hover:text-coral-vivid md:hover:text-dark">
+                                    <span className="flex items-center mt-4 md:mt-0">
+                                        <UserCircle size={24} className="me-2" />
+                                        Min profil
+                                    </span>
+                                </NavLink>
+                            </li>
+                            <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
+                                <NavLink to="/likedbooks" onClick={() => { toggleMobileMenu; toggleDropdownMenu }} className="hover:text-coral-vivid md:hover:text-dark">
+                                    <span className="flex items-center mt-4 md:mt-0">
+                                        <Books size={24} className="me-2" />
+                                        Gillade böcker
+                                    </span>
+                                </NavLink>
+                            </li>
+                        </ul>
                     </div>
+
             }
 
         </div >

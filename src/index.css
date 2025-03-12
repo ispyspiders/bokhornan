@@ -6,16 +6,17 @@
     @apply text-dark;
 }
 
-body{
+body {
     background-color: #EBD5D5;
 }
 
-h1, h2 {
+h1,
+h2 {
     @apply font-display text-dark-soft;
 }
 
 h2 {
-    @apply text-2xl ;
+    @apply text-2xl;
 }
 
 form button {
@@ -23,8 +24,10 @@ form button {
     font-feature-settings: 'liga' off;
 }
 
+
+
 /* Styling av aktiv navlink */
-.active span :first-child{
+.active span :first-child {
     color: #FD6378;
 }
 
@@ -37,7 +40,19 @@ form button {
         @apply font-medium
     }
 
-    .active span :first-child{
+    .active span :first-child {
         @apply text-dark
+    }
+
+    #userDropdown .active {
+        @apply font-light
+    }
+
+    #userDropdown .active:hover {
+        @apply text-dark
+    }
+
+    #userDropdown .active span :first-child {
+        color: #FD6378;
     }
 }
