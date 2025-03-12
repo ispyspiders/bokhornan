@@ -10,6 +10,19 @@ body{
     background-color: #EBD5D5;
 }
 
+h1, h2 {
+    @apply font-display text-dark-soft;
+}
+
+h2 {
+    @apply text-2xl ;
+}
+
+form button {
+    @apply bg-blush-deep ps-8 pe-4 py-2 rounded-lg flex mx-auto my-8 drop-shadow-sm hover:bg-blush-mid tracking-wider;
+    font-feature-settings: 'liga' off;
+}
+
 /* Styling av aktiv navlink */
 .active span :first-child{
     color: #FD6378;

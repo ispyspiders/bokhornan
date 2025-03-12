@@ -39,7 +39,7 @@ const LoginPage = () => {
     <div className="bg-blob bg-cover">
       <div className="p-4">
         <div className="bg-light rounded-lg p-4 my-12 mx-auto max-w-80 drop-shadow-sm">
-          <h1 className="text-3xl text-center text-dark-soft font-display my-4 mb-9">Logga in</h1>
+          <h2 className="text-3xl text-center text-dark-soft font-display my-4 mb-9">Logga in</h2>
           <form onSubmit={handleSubmit}>
 
             {/* Felmeddelande */}
@@ -74,7 +74,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blush-deep ps-8 pe-4 py-2 rounded-lg flex mx-auto my-8 drop-shadow-sm hover:bg-blush-mid"
+              className="bg-blush-deep ps-8 pe-4 py-2 rounded-lg flex mx-auto my-8 drop-shadow-sm hover:bg-blush-mid tracking-wider"
             >
               {isSubmitting ?
                 <>
