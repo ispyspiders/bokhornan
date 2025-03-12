@@ -7,6 +7,7 @@ export default {
     fontFamily: {
       display: ["Agbalumo", "cursive"],
       sans: ["Fredoka", "sans-serif"],
+      montserrat: ["Montserrat", "sans-serif"],
       serif: ["Lora", "serif"],
     },
     extend: {
@@ -23,6 +24,7 @@ export default {
       },
       backgroundImage: {
         "books": "url('/src/assets/banner.jpg')",
+        "blob": "url('/src/assets/blob.svg')",
       },
     },
   },
