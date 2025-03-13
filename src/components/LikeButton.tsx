@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { url } from '../types/auth.types';
-import { Heart, SpinnerGap } from '@phosphor-icons/react';
+import { Heart, SpinnerGap, WarningCircle } from '@phosphor-icons/react';
 import { useAuth } from "../context/AuthContext";
 
 
@@ -107,7 +107,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId }) => {
     if (loading) {
         return <SpinnerGap size={24} className='animate-spin' />
     }
-
+    if(error) {
+        return <WarningCircle size={24} className='text-coral'/>
+    }
+    
     return (
         <>
             {user ? (
