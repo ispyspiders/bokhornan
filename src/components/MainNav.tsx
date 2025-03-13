@@ -109,7 +109,7 @@ const MainNav = () => {
 
                         {/* Logga ut */}
                         <div className="flex items-center mt-2 row-span-all md:mt-0">
-                            <p className="pe-2 text-sm font-light">Inte du?</p>
+                            <p className="pe-2 text-sm font-light font-sans m-0">Inte du?</p>
                             <button onClick={logout} className="text-sm font-normal hover:text-coral-vivid">Logga ut</button>
                         </div>
 

@@ -6,6 +6,7 @@ import SearchImg from '../assets/shelves.gif';
 import Pagination from '../components/Pagination';
 import SearchForm from '../components/SearchForm';
 import { Link } from "react-router-dom";
+import LikeButton from '../components/LikeButton';
 
 
 
@@ -164,7 +165,7 @@ const SearchPage = () => {
                           )
                         ) : "Ingen författare tillgänglig"}</td>
                       <td className=''>{book.volumeInfo?.publishedDate || "Inget utgivningsdatum tillgängligt"}</td>
-                      <td>gillamarkeringar här</td>
+                      <td><LikeButton bookId={book.id} /></td>
                     </tr>
                   ))}
                 </tbody>
