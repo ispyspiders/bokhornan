@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Book } from '../types/book.types';
 import { WarningCircle } from '@phosphor-icons/react';
 import SearchImg from '../assets/shelves.gif';
 import Pagination from '../components/Pagination';
+import SearchForm from '../components/SearchForm';
 
 
 const SearchPage = () => {
@@ -14,6 +15,10 @@ const SearchPage = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const maxResults = 10; // antal resultat per sida
+  const [newSearchTerm, setNewSearchTerm] = useState('');
+  const [newSearchError, setNewSearchError] = useState('');
+
+  const navigate = useNavigate();
 
   // Hämta böcker utifrån sökterm
   const fetchBooks = async () => {
@@ -40,23 +45,43 @@ const SearchPage = () => {
     }
   }
 
+  // Ladda nästa sida med sökresultat
   const handleNextPage = () => {
     if (startIndex + maxResults < totalItems) {
       setStartIndex(startIndex + maxResults); // hämta nästa sida
     }
   }
 
+  // Ladda förgående sida med sökresultat
   const handlePreviousPage = () => {
     if (startIndex - maxResults >= 0)
-      setStartIndex(startIndex-maxResults); // Hämta föregående sida
+      setStartIndex(startIndex - maxResults); // Hämta föregående sida
+  }
+
+  // Hantera uppdatering i sökformulär
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewSearchTerm(e.target.value);
+    setNewSearchError(''); // rensa felmeddelande när användare börjar skriva
+  }
+
+  // Skicka sökformulär
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Kontrollera om söktermen är tom
+    if (!newSearchTerm.trim()) {
+      setError('Söktermen kan inte vara tom');
+      return;
+    }
+
+    navigate(`/search/${newSearchTerm}`)
+    
   }
 
   useEffect(() => {
     if (searchTerm) fetchBooks();
 
-  }, [searchTerm,startIndex]);
-
-
+  }, [searchTerm, startIndex]);
 
   return (
     <div className='p-12'>
@@ -68,6 +93,7 @@ const SearchPage = () => {
         </div>
       )}
 
+      {/* Under sökning */}
       {!searching &&
         <div>
           <h2 className='mb-2'>Sökresultat för: <span className='font-serif'>{searchTerm}</span></h2>
@@ -78,36 +104,41 @@ const SearchPage = () => {
             </div>
           )}
 
+          {/* Resultat */}
           {books.length > 0 ? (
             <div className='rounded-lg overflow-x-scroll'>
-              <table className='table-auto font-montserrat w-full text-sm'>
+              <table className='table-auto font-montserrat w-full text-sm drop-shadow-sm  rounded-lg overflow-hidden'>
                 <thead>
                   <tr className='bg-blush-mid text-sm font-semibold text-left'>
                     <th className='py-2 px-4'></th>
                     <th className='py-2 px-4'>Titel</th>
                     <th className='py-2 px-4'>Författare</th>
-                    <th className='py-2 px-4'>Utgivningsår</th>
+                    <th className='py-2 px-4'>Utgiven</th>
                     <th className='py-2 px-4'></th>
                   </tr>
                 </thead>
                 <tbody>
                   {books.map((book) => (
-                    <tr className='bg-light w-full border-b border-blush-mid'>
-                      <td><img src={book.volumeInfo.imageLinks.smallThumbnail} alt="" /></td>
-                      <td>{book.volumeInfo.title}</td>
-                      <td>{book.volumeInfo.authors.map((author) => (author + " "))}</td>
-                      <td className='text-center'>{book.volumeInfo.publishedDate.slice(0, 4)}</td>
+                    <tr key={book.id} className='bg-light w-full border-b border-blush-mid'>
+                      <td><img src={book.volumeInfo?.imageLinks?.smallThumbnail || ''} alt="" /></td>
+                      <td>{book.volumeInfo?.title || "Ingen titel tillgänglig"}</td>
+                      <td> {book.volumeInfo?.authors ? book.volumeInfo.authors.join(", ") : "Ingen författare tillgänglig"}</td>
+                      <td className=''>{book.volumeInfo?.publishedDate || "Inget utgivningsdatum tillgängligt"}</td>
                       <td>gillamarkeringar här</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <Pagination startIndex={startIndex} maxResults={maxResults} totalItems={totalItems} onPrevious={handlePreviousPage} onNext={handleNextPage}/>
+              <Pagination startIndex={startIndex} maxResults={maxResults} totalItems={totalItems} onPrevious={handlePreviousPage} onNext={handleNextPage} />
             </div>
           ) : (
             <p>Inga resultat funna.</p>
           )}
 
+          <div className='bg-light rounded-lg p-4 my-12 mx-auto  drop-shadow-sm'>
+            <h3 className='text-center text-lg'>Inte vad du letade efter?</h3>
+            <SearchForm searchTerm={newSearchTerm} error={newSearchError} onSearchChange={handleSearchChange} onSubmit={handleSubmit} />
+          </div>
         </div>
       }
 

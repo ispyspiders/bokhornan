@@ -1,6 +1,7 @@
 import { MagnifyingGlass } from '@phosphor-icons/react'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import SearchForm from '../components/SearchForm';
 
 const BooksPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -33,25 +34,7 @@ const BooksPage = () => {
             <h2 className='mb-2'>Böcker</h2>
             <p className='text-lg text-dark-soft'>Här kan du söka efter böcker baserat på titel, författare eller genre, samt upptäcka de mest populära böckerna just nu. Utforska böcker för att hitta din nästa läsupplevelse!</p>
 
-            <form onSubmit={handleSubmit} className='flex items-baseline my-8'>
-                <div className='w-full'>
-
-                    <input
-                        type="text"
-                        id='search'
-                        value={searchTerm}
-                        placeholder='Sök efter titel, författare eller genre... '
-                        onChange={handleSearchChange}
-                        className="text-md p-2 w-full rounded-s-md border border-e-0 border-blush-mid drop-shadow-sm focus:outline-blush-deep"
-                    />
-                    {error && <span className="text-sm font-light mt-2 ms-2 text-red-500 w-full">{error}</span>}
-                </div>
-
-                <button className='rounded-s-none m-0 ps-6 border border-s-0 border-blush-mid drop-shadow-sm'>
-                    <span className='me-2'>Sök</span>
-                    <MagnifyingGlass size={24} />
-                </button>
-            </form>
+            <SearchForm searchTerm={searchTerm} onSearchChange={handleSearchChange} error={error} onSubmit={handleSubmit}/>
 
             <h3 >Sök efter böcker</h3>
             <p>Använd vårt sökverktyg för att snabbt hitta böcker som passar din smak. Du kan söka på:</p>
