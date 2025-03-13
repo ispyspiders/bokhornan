@@ -11,12 +11,25 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3 {
     @apply font-display text-dark-soft;
 }
 
 h2 {
-    @apply text-2xl;
+    @apply text-2xl mb-2;
+}
+
+h3 {
+    @apply mb-2 mt-4
+}
+
+p {
+    @apply font-serif max-w-lg mb-2
+}
+
+td {
+    @apply p-2
 }
 
 form button {

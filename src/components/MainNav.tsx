@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { ArrowLeft, Books, CaretDown, CaretUp, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
+import { ArrowLeft, BookBookmark, BookOpen, Books, CaretDown, CaretUp, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "../context/AuthContext"
 
@@ -42,12 +42,28 @@ const MainNav = () => {
         <div className={`flex flex-col-reverse justify-center fixed top-0 start-0 end-14 bottom-16 z-10  bg-blush-light  drop-shadow 
         md:static md:w-4/5 md:mx-auto md:max-w-5xl md:flex-row md:bg-blush-deep md:justify-between  ${showMenu ? '' : 'hidden md:flex'}`}>
 
-            <ul className={`flex flex-col justify-center p-16 md:flex-row md:justify-start md:p-2 md:px-8 ${showMenu ? '' : 'hidden md:flex'}`}>
+            <ul className={`flex flex-col justify-center p-16 md:flex-row md:justify-start md:p-2 md:ps-4 ${showMenu ? '' : 'hidden md:flex'}`}>
                 <li className="my-2 text-xl font-light md:me-8 md:text-base">
                     <NavLink to="/" onClick={toggleMobileMenu} className="hover:text-coral-vivid">
                         <span className="flex items-center">
                             <HouseLine size={24} className="me-2 md:hidden" />
                             Startsida
+                        </span>
+                    </NavLink>
+                </li>
+                <li className="my-2 text-xl font-light md:me-8 md:text-base">
+                    <NavLink to="/books" onClick={toggleMobileMenu} className="hover:text-coral-vivid">
+                        <span className="flex items-center">
+                            <Books size={24} className="me-2 md:hidden" />
+                            Böcker
+                        </span>
+                    </NavLink>
+                </li>
+                <li className="my-2 text-xl font-light md:me-8 md:text-base">
+                    <NavLink to="/about" onClick={toggleMobileMenu} className="hover:text-coral-vivid">
+                        <span className="flex items-center">
+                            <BookOpen size={24} className="me-2 md:hidden" />
+                            Om oss
                         </span>
                     </NavLink>
                 </li>
@@ -66,7 +82,7 @@ const MainNav = () => {
                         </NavLink>
                     </div>
                     :
-                    <div className="grid grid-cols-3 items-center px-11 md:px-8 text-sm md:flex">
+                    <div className="grid grid-cols-3 items-center px-11 md:pe-4 md:ps-0 text-sm md:flex">
                         {/* Inloggad användare i meny */}
                         {/* Som text för små skärmar */}
                         <div className="my-2 ms-4 text-xl col-span-2  md:hidden">
@@ -113,7 +129,7 @@ const MainNav = () => {
                             <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                 <NavLink to="/likedbooks" onClick={() => { toggleMobileMenu; toggleDropdownMenu }} className="hover:text-coral-vivid md:hover:text-dark">
                                     <span className="flex items-center mt-4 md:mt-0">
-                                        <Books size={24} className="me-2" />
+                                        <BookBookmark size={24} className="me-2" />
                                         Gillade böcker
                                     </span>
                                 </NavLink>

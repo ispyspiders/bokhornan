@@ -25,6 +25,7 @@ export default {
       backgroundImage: {
         "books": "url('/src/assets/banner.jpg')",
         "blob": "url('/src/assets/blob.svg')",
+        "wave": "url('/src/assets/wave.svg')",
       },
     },
   },
