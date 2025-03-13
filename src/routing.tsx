@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import BooksPage from "./pages/BooksPage";
+import BookPage from "./pages/BookPage";
 import AboutPage from "./pages/AboutPage";
 import SearchPage from "./pages/SearchPage";
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: "/books",
                 element: <BooksPage />
+            },
+            {
+                path: "/book/:bookid",
+                element: <BookPage />
             },
             {
                 path: "/search/:searchTerm",

@@ -1,4 +1,3 @@
-import { MagnifyingGlass } from '@phosphor-icons/react'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import SearchForm from '../components/SearchForm';

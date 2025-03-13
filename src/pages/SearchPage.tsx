@@ -5,6 +5,8 @@ import { WarningCircle } from '@phosphor-icons/react';
 import SearchImg from '../assets/shelves.gif';
 import Pagination from '../components/Pagination';
 import SearchForm from '../components/SearchForm';
+import { Link } from "react-router-dom";
+
 
 
 const SearchPage = () => {
@@ -64,6 +66,12 @@ const SearchPage = () => {
     setNewSearchError(''); // rensa felmeddelande när användare börjar skriva
   }
 
+  // Navigera till författares sökresultat
+  const handleAuthorClick = (authorName: string) => {
+    navigate(`/search/${authorName}`);
+  }
+
+
   // Skicka sökformulär
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,9 +83,10 @@ const SearchPage = () => {
     }
 
     navigate(`/search/${newSearchTerm}`)
-    
+
   }
 
+  // Om sökterm eller startindex ändras hämta böcker
   useEffect(() => {
     if (searchTerm) fetchBooks();
 
@@ -96,7 +105,7 @@ const SearchPage = () => {
       {/* Under sökning */}
       {!searching &&
         <div>
-          <h2 className='mb-2'>Sökresultat för: <span className='font-serif'>{searchTerm}</span></h2>
+          <h2 className='mb-4'>Sökresultat för: <span className='font-serif'>{searchTerm}</span></h2>
           {/* Felmeddelande */}
           {error && (
             <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
@@ -106,7 +115,7 @@ const SearchPage = () => {
 
           {/* Resultat */}
           {books.length > 0 ? (
-            <div className='rounded-lg overflow-x-scroll'>
+            <div className='rounded-lg overflow-x-scroll sm:overflow-hidden'>
               <table className='table-auto font-montserrat w-full text-sm drop-shadow-sm  rounded-lg overflow-hidden'>
                 <thead>
                   <tr className='bg-blush-mid text-sm font-semibold text-left'>
@@ -121,8 +130,39 @@ const SearchPage = () => {
                   {books.map((book) => (
                     <tr key={book.id} className='bg-light w-full border-b border-blush-mid'>
                       <td><img src={book.volumeInfo?.imageLinks?.smallThumbnail || ''} alt="" /></td>
-                      <td>{book.volumeInfo?.title || "Ingen titel tillgänglig"}</td>
-                      <td> {book.volumeInfo?.authors ? book.volumeInfo.authors.join(", ") : "Ingen författare tillgänglig"}</td>
+                      <td>
+                        {book.volumeInfo.title ?
+                          <Link to={`/book/${book.id}`} className='hover:underline'>
+                            {book.volumeInfo.title}
+                          </Link>
+                          : "Ingen titel tillgänglig"}
+                      </td>
+                      <td>
+                        {book.volumeInfo?.authors ?
+                          (book.volumeInfo.authors.length > 2 ? (
+                            <>
+                              <span className='hover:underline cursor-pointer'
+                                onClick={() => handleAuthorClick(book.volumeInfo.authors[0])}>
+                                book.volumeInfo.authors[0]
+                              </span>
+                              , {" "}
+                              <span className='hover:underline cursor-pointer' onClick={() => handleAuthorClick(book.volumeInfo.authors[1])}>
+                                book.volumeInfo.authors[1]
+                              </span>
+                              {" "}m.fl
+                            </>
+                          ) : (
+                            book.volumeInfo.authors.map((author, index) => (
+                              <span
+                              key={index}
+                              className='hover:underline cursor-pointer'
+                              onClick={() => handleAuthorClick(author)}>
+                                {author}
+                                {index<book.volumeInfo.authors.length - 1 && ", "}
+                              </span>
+                            ))
+                          )
+                        ) : "Ingen författare tillgänglig"}</td>
                       <td className=''>{book.volumeInfo?.publishedDate || "Inget utgivningsdatum tillgängligt"}</td>
                       <td>gillamarkeringar här</td>
                     </tr>
