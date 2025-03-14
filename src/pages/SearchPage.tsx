@@ -95,6 +95,7 @@ const SearchPage = () => {
 
   return (
     <div className='p-12'>
+      {/* Under sökning */}
       {searching && (
         <div>
           <h2>Söker efter böcker...</h2>
@@ -103,7 +104,6 @@ const SearchPage = () => {
         </div>
       )}
 
-      {/* Under sökning */}
       {!searching &&
         <div>
           <h2 className='mb-4'>Sökresultat för: <span className='font-serif'>{searchTerm}</span></h2>
