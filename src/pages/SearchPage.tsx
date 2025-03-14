@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Book } from '../types/book.types';
+import { Book, bookUrl } from '../types/book.types';
 import { WarningCircle } from '@phosphor-icons/react';
 import SearchImg from '../assets/shelves.gif';
 import Pagination from '../components/Pagination';
@@ -27,7 +27,7 @@ const SearchPage = () => {
   const fetchBooks = async () => {
     setSearching(true);
     try {
-      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=${startIndex}&maxResults=${maxResults}`, {
+      const response = await fetch(`${bookUrl}?q=${searchTerm}&startIndex=${startIndex}&maxResults=${maxResults}`, {
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
@@ -144,11 +144,11 @@ const SearchPage = () => {
                             <>
                               <span className='hover:underline cursor-pointer'
                                 onClick={() => handleAuthorClick(book.volumeInfo.authors[0])}>
-                                book.volumeInfo.authors[0]
+                                {book.volumeInfo.authors[0]}
                               </span>
                               , {" "}
                               <span className='hover:underline cursor-pointer' onClick={() => handleAuthorClick(book.volumeInfo.authors[1])}>
-                                book.volumeInfo.authors[1]
+                                {book.volumeInfo.authors[1]}
                               </span>
                               {" "}m.fl
                             </>
