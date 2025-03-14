@@ -27,7 +27,10 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
     const [formData, setFormData] = useState<FormData>({ rating: 0, comment: '', book_id: bookId });
     const [errors, setErrors] = useState<ErrorsData>({ rating: null, comment: null, book_id: null });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [rating, setRating] = useState<number>(0);
 
+
+    
     // valideringsschema
     const validationSchema = Yup.object({
         rating: Yup.number().integer().positive().min(1, "Vänligen ange ett betyg mellan 1 och 5 stärnor").max(5, "Vänligen ange ett betyg mellan 1 och 5 stärnor").required("Vänligen ange ett betyg mellan 1 och 5 stärnor"),
@@ -57,7 +60,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
         setIsSubmitting(true);
         try {
             await validationSchema.validate(formData, { abortEarly: false });
-            console.log("efter validering");
 
             const newReview = formData;
 
@@ -116,7 +118,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
             )}
 
             <div className="flex text-dark-light text-sm items-center">
-                <StarRating onRatingChange={handleRatingChange} />
+                <StarRating onRatingChange={handleRatingChange} rating={formData.rating} />
                 {
                     formData.rating > 0 &&
                     <span className="ms-2">{formData.rating} / 5 </span>

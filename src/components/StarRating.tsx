@@ -2,14 +2,15 @@ import { Star } from "@phosphor-icons/react";
 import { useState } from "react";
 
 interface StarRatingProps {
-    onRatingChange: (rating: number) => void
+    onRatingChange: (rating: number) => void,
+    rating: number
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ onRatingChange }) => {
-    const [rating, setRating] = useState(0); // betyg (1-5)
+const StarRating: React.FC<StarRatingProps> = ({ onRatingChange, rating }) => {
+    // const [rating, setRating] = useState(0); // betyg (1-5)
 
     const handleClick = (newRating: number) => {
-        setRating(newRating);
+        // setRating(newRating);
         onRatingChange(newRating); // Skicka betyg till förälder
     };
 
