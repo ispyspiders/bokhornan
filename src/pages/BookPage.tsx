@@ -1,9 +1,120 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { Book, bookUrl } from '../types/book.types'
+import { Link, useParams } from 'react-router-dom';
+import { SpinnerGap, WarningCircle } from '@phosphor-icons/react';
+import LikeButton from '../components/LikeButton';
 
 const BookPage = () => {
-  return (
-    <div>BookPage</div>
-  )
+    const [book, setBook] = useState<Book | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    const { bookid } = useParams<{ bookid: string }>(); // id från adressrad
+
+    // Hämta bok
+    const fetchBook = async () => {
+        setLoading(true);
+        console.log(bookid);
+        try {
+            const response = await fetch(`${bookUrl}/${bookid}`, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            });
+            if (!response.ok) throw Error;
+            const data = await response.json() as Book;
+            setBook(data);
+            setError(null);
+        } catch (error) {
+            console.log("Något gick fel vid inläsning av bok: ", error);
+            setError("Något gick fel vid inläsning av bok.");
+        } finally {
+            // setLoading(false);
+        }
+    }
+
+    // Hämta bokinformation vid initiell rendering
+    useEffect(() => {
+        fetchBook();
+    }, [])
+
+    return (
+        <div className='p-4 py-12 md:p-12'>
+            <h2>Bokinformation</h2>
+            {book ? (
+                <>
+                    <section className='bg-light rounded-lg py-2 px-8 my-4 sm:px-12  mx-auto drop-shadow-sm'>
+                        <div className='flex flex-col items-end sm:flex-row sm:justify-between sm:items-end border-b border-blush-mid pb-4'>
+                            <div className='w-full mb-2 sm:mb-0'>
+                                <h3 className='font-serif text-dark text-2xl font-bold mb-0'>{book.volumeInfo.title}</h3>
+                                <p className='mb-0'><span>av </span>
+                                    {
+                                        book.volumeInfo.authors ? (
+                                            <>
+                                                {book.volumeInfo.authors.map((author, index) => (
+                                                    <Link to={`/search/${author}`} key={index} className='font-semibold text-dark-soft hover:underline'>
+                                                        {author}
+                                                        {index < book.volumeInfo.authors.length - 1 && ", "}
+                                                    </Link>
+
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <p> Ingen författare tillgänglig</p>
+                                        )
+                                    }
+                                </p>
+                            </div>
+                            <LikeButton bookId={book.id} />
+                        </div>
+
+                        <div className='flex flex-col-reverse lg:grid grid-cols-2 lg:gap-12'>
+                            <div>
+                                <h4 className='font-serif font-bold mt-8'>Om boken</h4>
+                                {/* Beskrivning, dangerously set för att renderas korrekt */}
+                                <div dangerouslySetInnerHTML={{ __html: book.volumeInfo.description || 'Ingen beskrivning tillgänglig' }}></div>
+                            </div>
+
+                            <div className='border-b border-blush-mid pb-8 sm:flex lg:flex-col lg:border-none'>
+                                <img src={`${book.volumeInfo.imageLinks.thumbnail}`} alt={`Omslag för ${book.volumeInfo.title}`} className='m-8 max-w-max lg:ms-0' />
+                                <div className='w-1/2 mt-8 lg:mt-0'>
+                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Utgivningsår:</span> 2019</p>
+                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Format:</span> 2019</p>
+                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Språk:</span> 2019</p>
+                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Antal sidor:</span> 2019</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>Recensioner</h2>
+                        <div>
+                            <form ></form>
+                        </div>
+                    </section>
+                </>
+            ) : (
+                <>
+                    {/* Läser in bok */}
+                    {loading &&
+                        <div className='bg-light rounded-lg p-4 my-12 mx-auto drop-shadow-sm flex'>
+                            Läser in bok... <SpinnerGap size={24} className="animate-spin ms-2" />
+                        </div>
+
+                    }
+
+                    {/* Felmeddelande */}
+                    {error &&
+                        <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
+                            <WarningCircle size={24} className="text-coral me-2" /> {error}
+                        </div>
+                    }
+                </>
+            )}
+
+        </div>
+    )
 }
 
 export default BookPage
