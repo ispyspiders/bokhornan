@@ -13,7 +13,7 @@ const Pagination: React.FC<PaginationProps> = ({ startIndex, totalItems, maxResu
 
     // Beräkna intervallet som visas för nuvarande sida
     const from = startIndex +1;
-    const to = Math.min(startIndex+maxResults, totalItems); // visa max "totalitems" på sista sidan
+    const endIndex = Math.min(startIndex +maxResults, totalItems);
 
     return (
         <div className='w-full mt-4 bg-light flex items-center justify-between rounded-lg text-sm gap-4 mb-2'>
@@ -22,9 +22,9 @@ const Pagination: React.FC<PaginationProps> = ({ startIndex, totalItems, maxResu
                 
             </button>
             <span>
-                Visar resultat {from} - {to} av {totalItems}
+                Visar resultat {from} - {endIndex} av {totalItems}
             </span>
-            <button onClick={onNext} disabled={startIndex + maxResults >= totalItems} className='flex rounded-e-lg py-2 m-0 ps-4 pe-8 border border-s-0 border-blush-mid drop-shadow-sm bg-blush-deep text-sm'>
+            <button onClick={onNext} disabled={startIndex + maxResults >= totalItems} className={`flex rounded-e-lg py-2 m-0 ps-4 pe-8 border border-s-0 border-blush-mid drop-shadow-sm bg-blush-deep text-sm`}>
                 <CaretRight size={24} />
             </button>
         </div>
