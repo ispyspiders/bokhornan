@@ -3,18 +3,20 @@ import { Book, bookUrl } from '../types/book.types'
 import { Link, useParams } from 'react-router-dom';
 import { SpinnerGap, WarningCircle } from '@phosphor-icons/react';
 import LikeButton from '../components/LikeButton';
+import ReviewForm from '../components/ReviewForm';
+import { Review } from '../types/review.types';
 
 const BookPage = () => {
     const [book, setBook] = useState<Book | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [reviews, setReviews] = useState<Review[]>([]);
 
     const { bookid } = useParams<{ bookid: string }>(); // id från adressrad
 
     // Hämta bok
     const fetchBook = async () => {
         setLoading(true);
-        console.log(bookid);
         try {
             const response = await fetch(`${bookUrl}/${bookid}`, {
                 headers: {
@@ -30,9 +32,15 @@ const BookPage = () => {
             console.log("Något gick fel vid inläsning av bok: ", error);
             setError("Något gick fel vid inläsning av bok.");
         } finally {
-            // setLoading(false);
+            setLoading(false);
         }
     }
+
+    // Skicka recension
+    const handleReviewCreated = (newReview: Review) => {
+        // Lägg till ny review i listan
+        setReviews((prevReviews) => [newReview, ...prevReviews]);
+    };
 
     // Hämta bokinformation vid initiell rendering
     useEffect(() => {
@@ -41,11 +49,15 @@ const BookPage = () => {
 
     return (
         <div className='p-4 py-12 md:p-12'>
+            {/* Bokinformation */}
             <h2>Bokinformation</h2>
             {book ? (
                 <>
+                    {/* Bookinfo-ruta */}
                     <section className='bg-light rounded-lg py-2 px-8 my-4 sm:px-12  mx-auto drop-shadow-sm'>
+                        {/* Titelrad */}
                         <div className='flex flex-col items-end sm:flex-row sm:justify-between sm:items-end border-b border-blush-mid pb-4'>
+                            {/* Titel och författare */}
                             <div className='w-full mb-2 sm:mb-0'>
                                 <h3 className='font-serif text-dark text-2xl font-bold mb-0'>{book.volumeInfo.title}</h3>
                                 <p className='mb-0'><span>av </span>
@@ -66,32 +78,38 @@ const BookPage = () => {
                                     }
                                 </p>
                             </div>
+                            {/* Gilla-knapp */}
                             <LikeButton bookId={book.id} />
                         </div>
 
                         <div className='flex flex-col-reverse lg:grid grid-cols-2 lg:gap-12'>
+                            {/* Om boken */}
                             <div>
-                                <h4 className='font-serif font-bold mt-8'>Om boken</h4>
+                                <h4 className='font-serif font-bold mt-8 text-lg mb-4'>Om boken</h4>
                                 {/* Beskrivning, dangerously set för att renderas korrekt */}
-                                <div dangerouslySetInnerHTML={{ __html: book.volumeInfo.description || 'Ingen beskrivning tillgänglig' }}></div>
+                                <div dangerouslySetInnerHTML={{ __html: book.volumeInfo.description || 'Ingen beskrivning tillgänglig' }} className='font-serif leading-7 mb-8'></div>
                             </div>
-
+                            {/* Bild och detaljinfo */}
                             <div className='border-b border-blush-mid pb-8 sm:flex lg:flex-col lg:border-none'>
                                 <img src={`${book.volumeInfo.imageLinks.thumbnail}`} alt={`Omslag för ${book.volumeInfo.title}`} className='m-8 max-w-max lg:ms-0' />
                                 <div className='w-1/2 mt-8 lg:mt-0'>
-                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Utgivningsår:</span> 2019</p>
-                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Format:</span> 2019</p>
-                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Språk:</span> 2019</p>
-                                <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Antal sidor:</span> 2019</p>
+                                    <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Utgiven: </span>{book.volumeInfo.publishedDate}</p>
+                                    <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Format: </span>{book.volumeInfo.printType}</p>
+                                    <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Språk: </span>{book.volumeInfo.language}</p>
+                                    <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Antal sidor: </span>{book.volumeInfo.pageCount}</p>
                                 </div>
                             </div>
                         </div>
                     </section>
+
+                    {/* Recensioner */}
                     <section>
                         <h2>Recensioner</h2>
-                        <div>
-                            <form ></form>
+                        <div className='bg-blush-deep rounded-lg p-2 my-4 sm:p-4  mx-auto drop-shadow-sm'>
+                            <ReviewForm bookId={book.id} onReviewCreated={handleReviewCreated} />
                         </div>
+
+
                     </section>
                 </>
             ) : (
