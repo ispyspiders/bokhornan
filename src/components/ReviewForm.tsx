@@ -4,6 +4,8 @@ import { Plus, SpinnerGap, WarningCircle } from "@phosphor-icons/react"
 import * as Yup from "yup";
 import { Review } from "../types/review.types";
 import { url } from "../types/auth.types";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 
 interface FormData {
@@ -27,10 +29,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
     const [formData, setFormData] = useState<FormData>({ rating: 0, comment: '', book_id: bookId });
     const [errors, setErrors] = useState<ErrorsData>({ rating: null, comment: null, book_id: null });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [rating, setRating] = useState<number>(0);
 
+    const { user } = useAuth();
 
-    
     // valideringsschema
     const validationSchema = Yup.object({
         rating: Yup.number().integer().positive().min(1, "Vänligen ange ett betyg mellan 1 och 5 stärnor").max(5, "Vänligen ange ett betyg mellan 1 och 5 stärnor").required("Vänligen ange ett betyg mellan 1 och 5 stärnor"),
@@ -86,14 +87,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
 
         } catch (validationErrors) {
             if (validationErrors instanceof Yup.ValidationError) {
-            console.error("Valideringsfel: ", validationErrors);
-            const errorMessages: ErrorsData = {rating:null, comment:null, book_id:null};
-            validationErrors.inner.forEach((err: Yup.ValidationError)=> {
-                if(err.path === "rating") errorMessages.rating = err.message;
-                if(err.path === "comment") errorMessages.comment = err.message;
-                if(err.path === "book_id") errorMessages.book_id = err.message;
-            });
-            setErrors(errorMessages);
+                console.error("Valideringsfel: ", validationErrors);
+                const errorMessages: ErrorsData = { rating: null, comment: null, book_id: null };
+                validationErrors.inner.forEach((err: Yup.ValidationError) => {
+                    if (err.path === "rating") errorMessages.rating = err.message;
+                    if (err.path === "comment") errorMessages.comment = err.message;
+                    if (err.path === "book_id") errorMessages.book_id = err.message;
+                });
+                setErrors(errorMessages);
             }
             else {
                 console.error("Ett oväntat fel vid validering: ", validationErrors);
@@ -103,60 +104,72 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
         }
     }
 
-    
+
 
     return (
 
         <form className="bg-light rounded p-4 w-full" onSubmit={handleSubmit}>
-            <h3 className="mt-0 mb-4">Har du läst boken?</h3>
-            <input type="hidden" name="book_id" value={bookId} id="book_id" />
-            {/* Felmeddelande */}
-            {errors.book_id && (
-                <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
-                    <WarningCircle size={24} className="text-coral me-2" /> {errors.book_id}
-                </div>
+            <h3 className="mt-0 mb-4 text-lg">Har du läst boken?</h3>
+            {user ? (
+                <>
+                    <input type="hidden" name="book_id" value={bookId} id="book_id" />
+                    {/* Felmeddelande */}
+                    {errors.book_id && (
+                        <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
+                            <WarningCircle size={24} className="text-coral me-2" /> {errors.book_id}
+                        </div>
+                    )}
+
+                    <div className="flex text-dark-light text-sm items-center">
+                        <StarRating onRatingChange={handleRatingChange} rating={formData.rating} size={32} />
+                        {
+                            formData.rating > 0 &&
+                            <span className="ms-2 text-lg">{formData.rating} / 5 </span>
+                        }
+                        {
+                            errors.rating && <span className="text-sm font-light mt-2 ms-2 text-red-500">{errors.rating}</span>
+                        }
+                    </div>
+
+                    <textarea
+                        name="comment"
+                        id="comment"
+                        rows={4}
+                        className="w-full mt-4 py-2 px-4 rounded border border-blush-mid focus:outline-coral focus:bg-blush-light"
+                        onChange={handleCommentChange}
+                        value={formData.comment}
+                    >
+                    </textarea>
+                    {
+                        errors.comment && <span className="text-sm font-light mt-2 ms-2 text-red-500">{errors.comment}</span>
+                    }
+                    <div className="w-full flex justify-end">
+                        <button
+                            type="submit"
+                            className="m-0 mt-4 ps-6 pe-3 flex items-center"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? (
+                                <span className="flex">
+                                    Skickar... <SpinnerGap size={24} className="ms-2 animate-spin" />
+                                </span>
+                            ) : (
+                                <span className="flex">
+                                    Skicka recension <Plus size={24} className="ms-2" />
+                                </span>
+                            )}
+                        </button>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <p>
+                        Endast medlemmar kan skriva recensioner. <br />
+                        <Link to="/login" className="font-semibold hover:underline">Logga in</Link> för att lämna ett omdöme. Inte medlem? <Link to={'/register'} className="font-semibold hover:underline">Bli medlem nu!</Link>
+                    </p>
+                </>
             )}
 
-            <div className="flex text-dark-light text-sm items-center">
-                <StarRating onRatingChange={handleRatingChange} rating={formData.rating} />
-                {
-                    formData.rating > 0 &&
-                    <span className="ms-2">{formData.rating} / 5 </span>
-                }
-                {
-                    errors.rating && <span className="text-sm font-light mt-2 ms-2 text-red-500">{errors.rating}</span>
-                }
-            </div>
-
-            <textarea
-                name="comment"
-                id="comment"
-                rows={4}
-                className="w-full mt-4 py-2 px-4 rounded border border-blush-mid focus:outline-coral focus:bg-blush-light"
-                onChange={handleCommentChange}
-                value={formData.comment}
-            >
-            </textarea>
-            {
-                errors.comment && <span className="text-sm font-light mt-2 ms-2 text-red-500">{errors.comment}</span>
-            }
-            <div className="w-full flex justify-end">
-                <button
-                    type="submit"
-                    className="m-0 mt-4 ps-6 pe-3 flex items-center"
-                    disabled={isSubmitting}
-                >
-                    {isSubmitting ? (
-                        <span className="flex">
-                            Skickar... <SpinnerGap size={24} className="ms-2 animate-spin" />
-                        </span>
-                    ) : (
-                        <span className="flex">
-                            Skicka recension <Plus size={24} className="ms-2" />
-                        </span>
-                    )}
-                </button>
-            </div>
         </form >
 
     )
