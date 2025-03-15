@@ -31,7 +31,7 @@ const RegisterPage = () => {
   // kontrollera användare
   useEffect(() => {
     if (user) {
-      navigate("/profile");
+      navigate(`/profile/${user.id}`);
     }
   }, [user])
 
@@ -44,7 +44,7 @@ const RegisterPage = () => {
 
       try {
         await register(newUser);
-        navigate("/profile");
+        navigate(`/profile/${user!.id}`);
       } catch (error) {
         setErrors({ message: "Något gick fel vid API-anropet: " + error })
         console.error("Fel vid API-anrop: ", error);

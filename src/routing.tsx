@@ -10,6 +10,7 @@ import BooksPage from "./pages/BooksPage";
 import BookPage from "./pages/BookPage";
 import AboutPage from "./pages/AboutPage";
 import SearchPage from "./pages/SearchPage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 const router = createBrowserRouter([
     {
@@ -45,10 +46,17 @@ const router = createBrowserRouter([
                 element: <AboutPage />
             },
             {
-                path: "/profile",
+                path: "/profile/:userId",
+                element: (
+                    <ProfilePage />
+
+                )
+            },
+            {
+                path: "/profile/edit",
                 element: (
                     <ProtectedRoute>
-                        <ProfilePage />
+                        <EditProfilePage />
                     </ProtectedRoute>
                 )
             },

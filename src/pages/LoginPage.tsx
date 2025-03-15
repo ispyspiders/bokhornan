@@ -15,7 +15,7 @@ const LoginPage = () => {
   // kontrollera användare
   useEffect(() => {
     if (user) {
-      navigate("/profile");
+      navigate(`/profile/${user.id}`);
     }
   }, [user])
 
@@ -25,7 +25,7 @@ const LoginPage = () => {
     setIsSubmitting(true);
     try {
       await login({ email, password });
-      navigate("/profile");
+      navigate(`/profile/${user!.id}`);
     } catch (error) {
       setError("Inloggning misslyckades! Kontrollera epost/lösenord.")
     } finally {
