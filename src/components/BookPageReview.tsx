@@ -17,7 +17,7 @@ const BookPageReview = ({ review }: BookPageReviewProps) => {
                 <span className="font-normal">, {review.created_at.slice(0, 10)}</span>
             </h4>
             {/* Betyg/Stärnor */}
-            <StarRating readonly={true} rating={review.rating} size={20}/>
+            <StarRating readonly={true} rating={review.rating} size={28}/>
             </div>
             <p className="ms-4">{review.comment}</p>
         </div>

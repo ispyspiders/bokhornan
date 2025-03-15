@@ -163,7 +163,7 @@ const BookPage = () => {
                                 ))
                             ) : (
                                 <>
-                                    {!loading &&
+                                    {!loadingReviews &&
                                         <div className='bg-light rounded-lg p-4 my-4 mx-auto drop-shadow-sm flex'>
                                             <p className='m-0'>Det finns inga recensioner att läsa ut för denna bok.</p>
                                         </div>

@@ -120,11 +120,11 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
                         </div>
                     )}
 
-                    <div className="flex text-dark-light text-sm items-center">
-                        <StarRating onRatingChange={handleRatingChange} rating={formData.rating} size={32} />
+                    <div className="flex flex-col text-dark-light text-sm sm:flex-row sm:items-center">
+                        <StarRating onRatingChange={handleRatingChange} rating={formData.rating} size={36} />
                         {
                             formData.rating > 0 &&
-                            <span className="ms-2 text-lg">{formData.rating} / 5 </span>
+                            <span className="sm:ms-2 text-lg">{formData.rating} / 5 </span>
                         }
                         {
                             errors.rating && <span className="text-sm font-light mt-2 ms-2 text-red-500">{errors.rating}</span>
