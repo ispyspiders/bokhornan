@@ -125,7 +125,7 @@ const BookPage = () => {
                             </div>
                             {/* Bild och detaljinfo */}
                             <div className='border-b border-blush-mid pb-8 sm:flex lg:flex-col lg:border-none'>
-                                <img src={`${book.volumeInfo.imageLinks.thumbnail}`} alt={`Omslag för ${book.volumeInfo.title}`} className='m-8 max-w-max lg:ms-0' />
+                                <img src={`${book.volumeInfo.imageLinks.thumbnail}`} alt={`Omslag för ${book.volumeInfo.title}`} className='m-8 max-w-max max-h-max lg:ms-0' />
                                 <div className='w-1/2 mt-8 lg:mt-0'>
                                     <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Utgiven: </span>{book.volumeInfo.publishedDate}</p>
                                     <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Format: </span>{book.volumeInfo.printType}</p>
