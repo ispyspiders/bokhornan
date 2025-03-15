@@ -5,8 +5,8 @@ export interface User {
     is_admin: boolean,
     bio: string,
     current_read: string,
-    avatar_file: string,
-    avatar_url: string,
+    avatar_file: string | null,
+    avatar_url: string | null,
     created_at: string,
     updated_at: string
 }
@@ -27,11 +27,12 @@ export interface RegistrationInfo {
     password: string
 }
 
-export interface AuthContextType{
+export interface AuthContextType {
     user: User | null,
     login: (credentials: LoginCredentials) => Promise<void>;
     logout: () => void;
     register: (userInfo: RegistrationInfo) => Promise<void>;
+    updateUser: (updatedUser: User) => void
 }
 
 export const url = "https://bokhornan-service.azurewebsites.net/api"

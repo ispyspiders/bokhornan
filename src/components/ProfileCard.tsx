@@ -17,7 +17,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isOwnProfile, likedBook
         <div className='bg-light rounded-lg p-4 my-12 mx-auto drop-shadow-sm flex flex-wrap gap-2'>
             <div>
                 <div id='avatar-container'>
-                    {user.avatar_file ? (
+                    {user.avatar_url ? (
                         <img src={user.avatar_url} alt="" />
                     ) : (
                         <div className='bg-blush-light rounded flex justify-center items-center w-56 h-56'>

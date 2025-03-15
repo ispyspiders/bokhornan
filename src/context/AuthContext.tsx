@@ -103,13 +103,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     }
 
+    // Uppdatera användardata
+    const updateUser = (updatedUser:User)=> {
+        setUser(updatedUser);
+    }
+
     useEffect(() => {
         checkToken();
     }, []);
 
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, register }}>
+        <AuthContext.Provider value={{ user, login, logout, register, updateUser }}>
             {children}
         </AuthContext.Provider>
     )

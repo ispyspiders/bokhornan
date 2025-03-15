@@ -12,8 +12,8 @@ interface UserProfile {
   is_admin: boolean;
   bio: string;
   current_read: string;
-  avatar_file: string;
-  avatar_url: string;
+  avatar_file: string|null;
+  avatar_url: string|null;
   created_at: string;
   updated_at: string;
 }
