@@ -32,16 +32,17 @@ const StarRating: React.FC<StarRatingProps> = ({ onRatingChange, rating, readonl
     const renderStars = () => {
         const stars = [];
         for (let i = 1; i <= 5; i++) {
+            const isFilled = hovered ? i <= hovered : i <= rating;
             stars.push(
-                <Star 
-                    weight="fill" 
-                    size={size} 
-                    key={i} 
-                    onClick={() => handleClick(i)} 
-                    onMouseEnter={()=> handleMouseEnter(i+1)}
+                <Star
+                    weight="fill"
+                    size={size}
+                    key={i}
+                    onClick={() => handleClick(i)}
+                    onMouseEnter={() => handleMouseEnter(i)}
                     onMouseLeave={handleMouseLeave}
-                    className={`${readonly ? 'cursor-default':'cursor-pointer'} me-2 ${i <= rating ? 'text-coral' : 'text-blush-mid'}`} 
-                    />
+                    className={`${readonly ? 'cursor-default' : 'cursor-pointer'} pe-2 ${isFilled ? 'text-coral' : 'text-blush-mid'}`}
+                />
             );
         }
         return stars;
