@@ -1,4 +1,4 @@
-import { FloppyDisk, SpinnerGap, Trash, UserCircle, WarningCircle } from '@phosphor-icons/react'
+import { FloppyDisk, LineVertical, SpinnerGap, Trash, UserCircle, WarningCircle } from '@phosphor-icons/react'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
@@ -250,14 +250,29 @@ const EditProfilePage = () => {
                         </div>
                     </div>
                     {/* Profilbild */}
-                    <div className='mb-4'>
+                    <div className='mb-4 flex flex-col w-fit'>
                         <span className="text-sm mb-2 font-light">Profilbild</span>
-                        {avatarPreview ? (
+                        {avatarPreview && !formData.avatar ? (
                             <div>
                                 <img src={avatarPreview} alt="Avatar" className='w-56 h-56 object-cover' />
-                                <button type='button' onClick={() => setShowConfirmDelete(true)} className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-dark-soft hover:underline hover:bg-transparent'>
-                                    Radera profilbild
-                                </button>
+
+                                <div className='flex items-center justify-end'>
+                                    {/* Radera knapp */}
+                                    <button type='button' onClick={() => setShowConfirmDelete(true)} className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-dark-soft hover:underline hover:bg-transparent'>
+                                        Radera bild
+                                    </button>
+
+                                    {/* uppdatera knapp */}
+                                    {!formData.avatar &&
+                                        <>
+                                            <LineVertical size={24} className='text-blush-deep mt-2'/>
+                                            <button type='button' onClick={() => setShowFileInput(!showFileInput)} className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-dark-soft hover:underline hover:bg-transparent'>
+                                                {showFileInput? 'Avbryt':'Ändra bild'}
+                                            </button>
+                                        </>
+                                    }
+                                </div>
+
                             </div>
                         ) : (
                             <div className='flex flex-col items-end'>
@@ -306,7 +321,7 @@ const EditProfilePage = () => {
                                         >
                                             {isDeleting ? (
                                                 <span className="flex">
-                                                    Raderar... <SpinnerGap size={24} className="ms-2 animate-spin" />
+                                                    Raderar... <SpinnerGap size={20} className="ms-2 animate-spin" />
                                                 </span>
                                             ) : (
                                                 <span className="flex">
