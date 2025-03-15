@@ -5,12 +5,17 @@ import { SpinnerGap, WarningCircle } from '@phosphor-icons/react';
 import LikeButton from '../components/LikeButton';
 import ReviewForm from '../components/ReviewForm';
 import { Review } from '../types/review.types';
+import { url } from '../types/auth.types';
+import BookPageReview from '../components/BookPageReview';
+
 
 const BookPage = () => {
     const [book, setBook] = useState<Book | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [loadingReviews, setLoadingReviews] = useState(false);
+    const [reviewError, setReviewError] = useState<string | null>(null);
 
     const { bookid } = useParams<{ bookid: string }>(); // id från adressrad
 
@@ -36,15 +41,44 @@ const BookPage = () => {
         }
     }
 
+    // Hämta recensioner för bok
+    const fetchReviews = async () => {
+        setLoadingReviews(true);
+        try {
+            const response = await fetch(`${url}/book/${bookid}/reviews`, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setReviews(data);
+                setReviewError(null);
+            } else if (response.status === 404) {
+                setReviews([]);
+                setReviewError(null);
+            } else {
+                throw Error;
+            }
+        } catch (error) {
+            console.log("Fel vid inläsning av recensioner: ", error);
+            setReviewError("Ett fel inträffade vid inläsning av recensioner")
+        } finally {
+            setLoadingReviews(false);
+        }
+    }
+
     // Skicka recension
     const handleReviewCreated = (newReview: Review) => {
         // Lägg till ny review i listan
         setReviews((prevReviews) => [newReview, ...prevReviews]);
     };
 
-    // Hämta bokinformation vid initiell rendering
+    // Hämta bokinformation och recensioner vid initiell rendering
     useEffect(() => {
         fetchBook();
+        fetchReviews();
     }, [])
 
     return (
@@ -107,9 +141,37 @@ const BookPage = () => {
                         <h2>Recensioner</h2>
                         <div className='bg-blush-deep rounded-lg p-2 my-4 sm:p-4  mx-auto drop-shadow-sm'>
                             <ReviewForm bookId={book.id} onReviewCreated={handleReviewCreated} />
+
+                            {/* Fel vid inläsning */}
+                            {reviewError &&
+                                <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
+                                    <WarningCircle size={24} className="text-coral me-2" /> {reviewError}
+                                </div>
+                            }
+
+                            {/* Laddar recensioner */}
+                            {loadingReviews &&
+                                <div className='bg-light rounded-lg p-4 my-4 mx-auto drop-shadow-sm flex'>
+                                    Läser in recensioner... <SpinnerGap size={24} className="animate-spin ms-2" />
+                                </div>
+                            }
+
+                            {/* Skriv ut recensioner */}
+                            {reviews.length > 0 ? (
+                                reviews.map((review) => (
+                                    <BookPageReview review={review} key={review.id} />
+                                ))
+                            ) : (
+                                <>
+                                    {!loading &&
+                                        <div className='bg-light rounded-lg p-4 my-4 mx-auto drop-shadow-sm flex'>
+                                            <p className='m-0'>Det finns inga recensioner att läsa ut för denna bok.</p>
+                                        </div>
+                                    }
+                                </>
+                            )}
+
                         </div>
-
-
                     </section>
                 </>
             ) : (
