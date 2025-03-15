@@ -8,7 +8,7 @@ interface BookPageReviewProps {
 
 const BookPageReview = ({ review }: BookPageReviewProps) => {
     return (
-        <div className="bg-light rounded p-4 my-4 mx-auto drop-shadow-sm">
+        <div className="bg-light rounded p-4 mb-4 mx-auto drop-shadow-sm">
             <div className="sm:flex justify-between border-b border-blush-mid pb-4 mb-4 ps-2">
 
             {/* Namn och publicerad */}

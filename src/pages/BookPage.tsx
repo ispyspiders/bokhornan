@@ -16,6 +16,8 @@ const BookPage = () => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loadingReviews, setLoadingReviews] = useState(false);
     const [reviewError, setReviewError] = useState<string | null>(null);
+    const [sortOption, setSortOption] = useState<string>('newest');
+    const [filterRating, setFilterRating] = useState<number | null>(null);
 
     const { bookid } = useParams<{ bookid: string }>(); // id från adressrad
 
@@ -69,17 +71,47 @@ const BookPage = () => {
         }
     }
 
+    // Sortera recensioner baserat på valt alternativ
+    const sortReviews = (reviews: Review[], option: string) => {
+        switch (option) {
+            case 'newest':
+                return reviews.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+            case 'oldest':
+                return reviews.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+            case 'higestRating':
+                return reviews.sort((a, b) => b.rating - a.rating);
+            case 'lowestRating':
+                return reviews.sort((a, b) => a.rating - b.rating);
+            default: return reviews;
+        }
+    }
+
+    // Filtrera recensioner baserat på betyg
+    const filterReviewsByRating = (reviews: Review[], rating: number | null) => {
+        if (rating === null) return reviews; // returnera alla recensioner om rating är null
+        return reviews.filter((review) => review.rating === rating);
+    };
+
     // Skicka recension
     const handleReviewCreated = (newReview: Review) => {
         // Lägg till ny review i listan
         setReviews((prevReviews) => [newReview, ...prevReviews]);
     };
 
+    // hantera filtrerings ändring 
+    const handleFilterRatingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value === 'all' ? null : parseInt(event.target.value, 10);
+        setFilterRating(value);
+    }
+
     // Hämta bokinformation och recensioner vid initiell rendering
     useEffect(() => {
         fetchBook();
         fetchReviews();
-    }, [])
+    }, [bookid]);
+
+    let filteredReviews = filterReviewsByRating(reviews, filterRating);
+    filteredReviews = sortReviews(filteredReviews, sortOption);
 
     return (
         <div className='p-4 py-12 md:p-12'>
@@ -140,9 +172,10 @@ const BookPage = () => {
                     <section>
                         <h2>Recensioner</h2>
                         <div className='bg-blush-deep rounded-lg p-2 my-4 sm:p-4  mx-auto drop-shadow-sm'>
+                            {/* Recensionsformulär */}
                             <ReviewForm bookId={book.id} onReviewCreated={handleReviewCreated} />
 
-                            {/* Fel vid inläsning */}
+                            {/* Fel vid inläsning av recensioner*/}
                             {reviewError &&
                                 <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
                                     <WarningCircle size={24} className="text-coral me-2" /> {reviewError}
@@ -156,9 +189,37 @@ const BookPage = () => {
                                 </div>
                             }
 
+                            <div className='flex flex-col sm:flex-row sm:justify-between sm:gap-8 mt-8'>
+                                {/* Filtrering av recensioner */}
+                                <div className="flex flex-col w-1/2">
+                                    <label className="text-sm font-light mb-2 mt-4" htmlFor="password">Filtrera</label>
+                                    <select name="filterRating" id="filterRating" value={filterRating !== null ? filterRating : 'all'}
+                                        onChange={handleFilterRatingChange} className='text-md p-2 rounded border border-blush-mid drop-shadow-sm focus:bg-blush-light'>
+                                        <option value="all">Alla betyg</option>
+                                        <option value={1}>1 stjärna</option>
+                                        <option value={2}>2 stjärnor</option>
+                                        <option value={3}>3 stjärnor</option>
+                                        <option value={4}>4 stjärnor</option>
+                                        <option value={5}>5 stjärnor</option>
+                                    </select>
+                                </div>
+
+                                {/* Sortering av recensioner */}
+                                <div className="mb-4 flex flex-col w-1/2">
+                                    <label className="text-sm font-light mb-2 mt-4" htmlFor="password">Sortera</label>
+                                    <select name="sort" id="sort" value={sortOption} onChange={(e) => { setSortOption(e.target.value) }}
+                                        className='text-md p-2 rounded border border-blush-mid drop-shadow-sm focus:bg-blush-light'>
+                                        <option value="newest">Nyast</option>
+                                        <option value="oldest">Äldst</option>
+                                        <option value="highestRating">Högst betyg</option>
+                                        <option value="lowestRating">Lägst betyg</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             {/* Skriv ut recensioner */}
-                            {reviews.length > 0 ? (
-                                reviews.map((review) => (
+                            {filteredReviews.length > 0 ? (
+                                filteredReviews.map((review) => (
                                     <BookPageReview review={review} key={review.id} />
                                 ))
                             ) : (
