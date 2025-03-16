@@ -11,23 +11,26 @@ import { Link } from "react-router-dom";
 interface FormData {
     rating: number,
     comment: string,
-    book_id: string
+    book_id: string,
+    book_title: string
 }
 
 interface ErrorsData {
     rating: string | null,
     comment: string | null,
-    book_id: string | null
+    book_id: string | null,
+    book_title: string | null,
 }
 
 interface ReviewFormProps {
     bookId: string,
+    bookTitle: string,
     onReviewCreated: (reviewData: Review) => void;
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
-    const [formData, setFormData] = useState<FormData>({ rating: 0, comment: '', book_id: bookId });
-    const [errors, setErrors] = useState<ErrorsData>({ rating: null, comment: null, book_id: null });
+const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, bookTitle, onReviewCreated }) => {
+    const [formData, setFormData] = useState<FormData>({ rating: 0, comment: '', book_id: bookId, book_title: bookTitle });
+    const [errors, setErrors] = useState<ErrorsData>({ rating: null, comment: null, book_id: null, book_title: null });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { user } = useAuth();
@@ -36,7 +39,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
     const validationSchema = Yup.object({
         rating: Yup.number().integer().positive().min(1, "Vänligen ange ett betyg mellan 1 och 5 stärnor").max(5, "Vänligen ange ett betyg mellan 1 och 5 stärnor").required("Vänligen ange ett betyg mellan 1 och 5 stärnor"),
         comment: Yup.string().required("Kommentar får ej vara tomt").max(255, "Kommentar får ej vara längre än 255 tecken"),
-        book_id: Yup.string().required("Bok-id måste anges")
+        book_id: Yup.string().required("Bok-id måste anges"),
+        book_title: Yup.string().required("Titel måste anges")
     })
 
     // Ta emot betyg
@@ -79,7 +83,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
                 // Om ok svar, signalera skapande
                 const newReview = await response.json() as Review;
                 onReviewCreated(newReview);
-                setFormData({ rating: 0, comment: "", book_id: bookId }); //nollställ formulär
+                setFormData({ rating: 0, comment: "", book_id: bookId, book_title: bookTitle }); //nollställ formulär
             } else {
                 const errorResponse = await response.json();
                 setErrors({ ...errors, book_id: errorResponse.message || "Fel vid skapande av recension" });
@@ -88,11 +92,12 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
         } catch (validationErrors) {
             if (validationErrors instanceof Yup.ValidationError) {
                 console.error("Valideringsfel: ", validationErrors);
-                const errorMessages: ErrorsData = { rating: null, comment: null, book_id: null };
+                const errorMessages: ErrorsData = { rating: null, comment: null, book_id: null, book_title:null };
                 validationErrors.inner.forEach((err: Yup.ValidationError) => {
                     if (err.path === "rating") errorMessages.rating = err.message;
                     if (err.path === "comment") errorMessages.comment = err.message;
                     if (err.path === "book_id") errorMessages.book_id = err.message;
+                    if (err.path === "book_title") errorMessages.book_title = err.message;
                 });
                 setErrors(errorMessages);
             }
@@ -113,6 +118,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, onReviewCreated }) => {
             {user ? (
                 <>
                     <input type="hidden" name="book_id" value={bookId} id="book_id" />
+                    <input type="hidden" name="book_title" value={bookTitle} id="book_title" />
                     {/* Felmeddelande */}
                     {errors.book_id && (
                         <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">

@@ -7,6 +7,8 @@ import Pagination from '../components/Pagination';
 import SearchForm from '../components/SearchForm';
 import { Link } from "react-router-dom";
 import LikeButton from '../components/LikeButton';
+import defaultCover from '../assets/defaultCover.png'
+
 
 
 
@@ -130,7 +132,7 @@ const SearchPage = () => {
                 <tbody>
                   {books.map((book) => (
                     <tr key={book.id} className='bg-light w-full border-b border-blush-mid'>
-                      <td><img src={book.volumeInfo?.imageLinks?.smallThumbnail || ''} alt="" /></td>
+                      <td><img src={book.volumeInfo?.imageLinks?.smallThumbnail || defaultCover} alt="" /></td>
                       <td>
                         {book.volumeInfo.title ?
                           <Link to={`/book/${book.id}`} className='hover:underline'>
@@ -165,7 +167,7 @@ const SearchPage = () => {
                           )
                         ) : "Ingen författare tillgänglig"}</td>
                       <td className=''>{book.volumeInfo?.publishedDate || "Inget utgivningsdatum tillgängligt"}</td>
-                      <td><LikeButton bookId={book.id} /></td>
+                      <td><LikeButton bookId={book.id} title={book.volumeInfo.title} thumbnail={book.volumeInfo?.imageLinks?.smallThumbnail || defaultCover  } /></td>
                     </tr>
                   ))}
                 </tbody>

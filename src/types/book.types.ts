@@ -21,4 +21,14 @@ export interface ImageLinks {
     thumbnail: string
 }
 
+export interface LikedBook {
+    id: number,
+    user_id: number,
+    book_id: string,
+    created_at: string,
+    updated_at: string,
+    title: string,
+    thumbnail: string
+}
+
 export const bookUrl = "https://www.googleapis.com/books/v1/volumes";

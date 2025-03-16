@@ -6,9 +6,12 @@ import { useAuth } from "../context/AuthContext";
 
 interface LikeButtonProps {
     bookId: string; // Bokens id
+    title: string;
+    thumbnail: string;
+    readonly?: boolean
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ bookId }) => {
+const LikeButton: React.FC<LikeButtonProps> = ({ bookId, title, thumbnail, readonly }) => {
 
     const [likeCount, setLikeCount] = useState<number>(0);
     const [liked, setLiked] = useState(false);
@@ -45,7 +48,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId }) => {
 
                 const endpoint = liked ? `/${bookId}` : ""
 
-                const body = JSON.stringify({ book_id: bookId });
+                const body = JSON.stringify({ book_id: bookId, title: title, thumbnail: thumbnail });
 
                 const response = await fetch(`${url}/likedbooks${endpoint}`, {
                     method: method,
@@ -54,7 +57,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId }) => {
                         "Content-Type": "application/json",
                         "Authorization": "Bearer " + localStorage.getItem("bookToken")
                     },
-                    body: method === 'POST' ? body: undefined, 
+                    body: method === 'POST' ? body : undefined,
                 });
 
                 if (response.ok) {
@@ -107,10 +110,19 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId }) => {
     if (loading) {
         return <SpinnerGap size={24} className='animate-spin' />
     }
-    if(error) {
-        return <WarningCircle size={24} className='text-coral'/>
+    if (error) {
+        return <WarningCircle size={24} className='text-coral' />
     }
-    
+
+    if (readonly) {
+        return (
+            <div className='flex justify-center items-center text-dark-soft mx-4'>
+                <Heart weight='fill' size={24} className='text-coral text-opacity-50' />
+                <span className='mx-2'>({likeCount})</span>
+            </div>
+        )
+    }
+
     return (
         <>
             {user ? (
