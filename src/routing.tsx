@@ -11,6 +11,7 @@ import BookPage from "./pages/BookPage";
 import AboutPage from "./pages/AboutPage";
 import SearchPage from "./pages/SearchPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import ReviewPage from "./pages/ReviewPage";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <EditProfilePage />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/review/:reviewId",
+                element: (
+                    <ProtectedRoute>
+                        <ReviewPage />
                     </ProtectedRoute>
                 )
             },

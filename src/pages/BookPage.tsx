@@ -147,7 +147,7 @@ const BookPage = () => {
                                 </p>
                             </div>
                             {/* Gilla-knapp */}
-                            <LikeButton bookId={book.id} title={book.volumeInfo.title} thumbnail={book.volumeInfo?.imageLinks?.thumbnail || defaultCover} />
+                            {/* <LikeButton bookId={book.id} title={book.volumeInfo.title} thumbnail={book.volumeInfo?.imageLinks?.thumbnail || defaultCover} /> */}
                         </div>
 
                         <div className='flex flex-col-reverse lg:grid grid-cols-2 lg:gap-12'>

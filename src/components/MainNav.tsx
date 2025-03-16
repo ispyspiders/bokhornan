@@ -126,14 +126,14 @@ const MainNav = () => {
                                     </span>
                                 </NavLink>
                             </li>
-                            <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
+                            {/* <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                 <NavLink to="/likedbooks" onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
                                     <span className="flex items-center mt-4 md:mt-0">
                                         <BookBookmark size={24} className="me-2" />
                                         Gillade böcker
                                     </span>
                                 </NavLink>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
 

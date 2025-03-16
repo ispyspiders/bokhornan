@@ -181,7 +181,7 @@ const ProfilePage = () => {
     <div className='p-4 py-12 md:p-12'>
       <h2>Profil</h2>
       {/* Profilkort */}
-      <ProfileCard user={profile} isOwnProfile={isOwnProfile} reviewCount={0} likedBooksCount={0} />
+      <ProfileCard user={profile} isOwnProfile={isOwnProfile} reviewCount={reviews.length} likedBooksCount={likedBooks.length} />
 
       <h3 className="text-xl mt-8">Gillade böcker</h3>
       {likedBooksError && (

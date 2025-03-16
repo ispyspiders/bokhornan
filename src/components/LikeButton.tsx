@@ -24,7 +24,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId, title, thumbnail, reado
     const checkIfLiked = async () => {
         if (user) {
             try {
-                const response = await fetch(`${url}/user/${user.id}/likedbooks`, {
+                const response = await fetch(`${url}/user/${Number(user.id)}/likedbooks`, {
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json"
@@ -46,9 +46,11 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId, title, thumbnail, reado
             try {
                 const method = liked ? 'DELETE' : 'POST'; // Om boken redan är gillad DELETE, är boken inte gillad POST
 
-                const endpoint = liked ? `/${bookId}` : ""
+                const endpoint = liked ? `/${bookId}` : "";
 
                 const body = JSON.stringify({ book_id: bookId, title: title, thumbnail: thumbnail });
+
+                console.log(body);
 
                 const response = await fetch(`${url}/likedbooks${endpoint}`, {
                     method: method,
