@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { url } from "../types/auth.types";

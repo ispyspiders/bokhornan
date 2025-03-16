@@ -265,9 +265,9 @@ const EditProfilePage = () => {
                                     {/* uppdatera knapp */}
                                     {!formData.avatar &&
                                         <>
-                                            <LineVertical size={24} className='text-blush-deep mt-2'/>
+                                            <LineVertical size={24} className='text-blush-deep mt-2' />
                                             <button type='button' onClick={() => setShowFileInput(!showFileInput)} className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-dark-soft hover:underline hover:bg-transparent'>
-                                                {showFileInput? 'Avbryt':'Ändra bild'}
+                                                {showFileInput ? 'Avbryt' : 'Ändra bild'}
                                             </button>
                                         </>
                                     }
@@ -337,6 +337,11 @@ const EditProfilePage = () => {
                     </div>
 
                     <div className="w-full flex justify-end col-span-2">
+                        <button type="button" onClick={() => navigate(-1)} className="bg-blush-mid m-0 mt-4 me-8 px-4 hover:bg-opacity-80"
+                        >
+                            Avbryt
+                        </button>
+
                         <button
                             type="submit"
                             className="m-0 mt-4 ps-6 pe-3 flex items-center"
