@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Book, bookUrl } from '../types/book.types'
 import { Link, useParams } from 'react-router-dom';
-import { BookOpenText, SpinnerGap, WarningCircle } from '@phosphor-icons/react';
+import { SpinnerGap, WarningCircle } from '@phosphor-icons/react';
 import LikeButton from '../components/LikeButton';
 import ReviewForm from '../components/ReviewForm';
 import { Review } from '../types/review.types';
