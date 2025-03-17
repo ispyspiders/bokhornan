@@ -68,7 +68,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className='p-0 pt-12'>
+    <div className='p-0 -pt-10'>
       <div className="bg-blob bg-cover">
         <section className="flex flex-col  justify-center h-96 p-4 sm:px-12">
           <h2 className="text-4xl text-center">Hitta din nästa bok</h2>

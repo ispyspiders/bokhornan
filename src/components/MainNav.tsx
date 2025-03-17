@@ -124,7 +124,7 @@ const MainNav = () => {
 
                         {/* md: Dropdown */}
                         <ul ref={menuRef} id="userDropdown" role="menu" aria-labelledby="dropdown-button" className={`col-span-2 ms-4 text-xl font-light
-                        md:bg-light md:rounded-md md:border-2 md:border-blush-mid md:fixed md:top-16 md:z-20 md:py-2 ${showDropdown ? '' : 'md:hidden'}`}>
+                        md:bg-light md:rounded-md md:border-2 md:border-blush-mid md:absolute  md:top-16 md:py-2  ${showDropdown ? '' : 'md:hidden'}`}>
                             <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                 <NavLink to={`/profile/${user.id}`} onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
                                     <span className="flex items-center mt-4 md:mt-0">
@@ -133,7 +133,7 @@ const MainNav = () => {
                                     </span>
                                 </NavLink>
                             </li>
-                            {user.is_admin &&
+                            {user.is_admin == 1 && (
                                 <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                     <NavLink to={`/admin`} onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
                                         <span className="flex items-center mt-4 md:mt-0">
@@ -142,6 +142,7 @@ const MainNav = () => {
                                         </span>
                                     </NavLink>
                                 </li>
+                            )
                             }
                             {/* <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                 <NavLink to="/likedbooks" onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
