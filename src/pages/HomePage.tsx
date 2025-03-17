@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { url } from "../types/auth.types";
 import { Review } from "../types/review.types";
 import { SpinnerGap, WarningCircle } from "@phosphor-icons/react";
-import ReviewCard from "../components/ReviewCard";
 import Carousel from "../components/Carousel";
 
 const HomePage = () => {

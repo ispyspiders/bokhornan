@@ -118,7 +118,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ bookId, title, thumbnail, reado
 
     if (readonly) {
         return (
-            <div className='flex justify-center items-center text-dark-soft mx-4'>
+            <div className='flex justify-center items-center text-dark-soft'>
                 <Heart weight='fill' size={24} className='text-coral text-opacity-50' />
                 <span className='mx-2'>({likeCount})</span>
             </div>
