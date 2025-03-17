@@ -5,6 +5,7 @@ import { url } from "../types/auth.types";
 import { Review } from "../types/review.types";
 import { SpinnerGap, WarningCircle } from "@phosphor-icons/react";
 import ReviewCard from "../components/ReviewCard";
+import Carousel from "../components/Carousel";
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,38 +69,39 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className='p-0 py-12'>
-      <div className="bg-blob bg-cover   ">
+    <div className='p-0 pt-12'>
+      <div className="bg-blob bg-cover">
         <section className="flex flex-col  justify-center h-96 p-4 sm:px-12">
           <h2 className="text-4xl text-center">Hitta din nästa bok</h2>
           <SearchForm searchTerm={searchTerm} onSearchChange={handleSearchChange} error={error} onSubmit={handleSubmit} />
         </section>
 
-        <section className="p-4">
-          <h2>Senaste recensionerna</h2>
-          {reviewError && (
-            <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
-              <WarningCircle size={24} className="text-coral me-2" /> {reviewError}
-            </div>
-          )}
+        <section>
+          <div className="m-4">
 
-          {/* Laddar recensioner */}
-          {loadingReviews &&
-            <div className='bg-light rounded-lg p-4 my-4 mx-auto drop-shadow-sm flex'>
-              Läser in recensioner... <SpinnerGap size={24} className="animate-spin ms-2" />
-            </div>
-          }
+            <h2>Senaste recensionerna</h2>
+            {reviewError && (
+              <div className="bg-coral bg-opacity-10 border-2 border-coral rounded-md p-2 my-4 flex items-center text-sm">
+                <WarningCircle size={24} className="text-coral me-2" /> {reviewError}
+              </div>
+            )}
+
+            {/* Laddar recensioner */}
+            {loadingReviews &&
+              <div className='bg-light rounded-lg p-4 my-4 mx-auto drop-shadow-sm flex'>
+                Läser in recensioner... <SpinnerGap size={24} className="animate-spin ms-2" />
+              </div>
+            }
+          </div>
 
 
           {reviews.length > 0 ? (
-            <>
-              {
-                reviews.map((review) => (
-                  <ReviewCard review={review} key={review.id} />
-              ))
-              }
+            <div className="-mx-4 sm:mx-auto">
+              <Carousel reviews={reviews} />
 
-            </>
+            </div>
+
+
           ) : (
             <>
               {!loadingReviews &&
