@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { ArrowLeft, BookBookmark, BookOpen, Books, CaretDown, CaretUp, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
+import { ArrowLeft, BookOpen, Books, CaretDown, CaretUp, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "../context/AuthContext"
 
