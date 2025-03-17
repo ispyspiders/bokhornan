@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
@@ -12,6 +13,7 @@ import AboutPage from "./pages/AboutPage";
 import SearchPage from "./pages/SearchPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ReviewPage from "./pages/ReviewPage";
+import AdminPage from "./pages/AdminPage";
 
 const router = createBrowserRouter([
     {
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
                     <ProtectedRoute>
                         <EditProfilePage />
                     </ProtectedRoute>
+                )
+            },
+            {
+                path: "/admin",
+                element: (
+                        <ProtectedAdminRoute>
+                            <AdminPage />
+                        </ProtectedAdminRoute>
                 )
             },
             {

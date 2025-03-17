@@ -104,12 +104,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     // Uppdatera användardata
-    const updateUser = (updatedUser:User)=> {
+    const updateUser = (updatedUser: User) => {
         setUser(updatedUser);
+    }
+
+    // Kontrollera om admin
+    const checkIfAdmin = () => {
+        return user?.is_admin === 1
     }
 
     useEffect(() => {
         checkToken();
+        checkIfAdmin();
     }, []);
 
 

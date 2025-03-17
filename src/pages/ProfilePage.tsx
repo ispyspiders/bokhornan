@@ -13,7 +13,7 @@ interface UserProfile {
   id: string;
   name: string;
   email: string;
-  is_admin: boolean;
+  is_admin: number;
   bio: string;
   current_read: string;
   avatar_file: string | null;

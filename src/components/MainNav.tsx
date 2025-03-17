@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { ArrowLeft, BookOpen, Books, CaretDown, CaretUp, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
+import { ArrowLeft, BookOpen, Books, CaretDown, CaretUp, Gear, HouseLine, List, SignIn, UserCircle } from "@phosphor-icons/react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "../context/AuthContext"
 
@@ -8,11 +8,11 @@ const MainNav = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
 
-    const menuRef = useRef<HTMLUListElement|null>(null);
+    const menuRef = useRef<HTMLUListElement | null>(null);
 
-    useEffect(()=> {
+    useEffect(() => {
         // Hantera klick utanför dropdownmenu: stäng dropdown
-        const handler = (event:MouseEvent|TouchEvent) => {
+        const handler = (event: MouseEvent | TouchEvent) => {
             if (
                 showDropdown &&
                 menuRef.current &&
@@ -23,7 +23,7 @@ const MainNav = () => {
         };
         document.addEventListener("mousedown", handler);
         document.addEventListener("touchstart", handler);
-        return () =>{
+        return () => {
             document.removeEventListener("mousedown", handler);
             document.removeEventListener("touchstart", handler);
         };
@@ -39,7 +39,7 @@ const MainNav = () => {
     }
 
     return <>
-        <div className={`flex flex-col-reverse justify-center fixed top-0 start-0 end-14 bottom-16 z-10  bg-blush-light  drop-shadow 
+        <div className={`flex flex-col-reverse justify-center fixed top-0 start-0 end-14 bottom-16 z-20  bg-blush-light  drop-shadow 
         md:static md:w-4/5 md:mx-auto md:max-w-5xl md:flex-row md:bg-blush-deep md:justify-between  ${showMenu ? '' : 'hidden md:flex'}`}>
 
             <ul className={`flex flex-col justify-center p-16 md:flex-row md:justify-start md:p-2 md:ps-4 ${showMenu ? '' : 'hidden md:flex'}`}>
@@ -93,10 +93,18 @@ const MainNav = () => {
                             </span>
                         </div>
                         {/* Som knapp som togglar dropdown för medelstora skärmar och uppåt */}
-                        <button onClick={toggleDropdownMenu} id="dropdown-button" aria-controls="dropdown-menu" aria-haspopup="true" aria-expanded={showDropdown} className="hidden my-2 ms-4 text-xl col-span-2 md:block  md:me-4 md:text-base">
+                        <button
+                            onClick={toggleDropdownMenu}
+                            id="dropdown-button"
+                            aria-controls="dropdown-menu"
+                            aria-haspopup="true"
+                            aria-expanded={showDropdown}
+                            className="hidden my-2 ms-4 text-xl col-span-2 md:block  md:me-4 md:text-base"
+                            style={{ display: 'flex', alignItems: 'center' }} 
+                        >
                             <span className="flex items-center">
                                 <UserCircle size={24} className="me-2" />
-                                {user.name}
+                                <span>{user.name}</span>
                                 {/* Caret upp eller ned beroende på om öppen */}
                                 {showDropdown ?
                                     <CaretUp weight="fill" size={14} className="hidden ms-2 md:block" />
@@ -117,7 +125,7 @@ const MainNav = () => {
 
                         {/* md: Dropdown */}
                         <ul ref={menuRef} id="userDropdown" role="menu" aria-labelledby="dropdown-button" className={`col-span-2 ms-4 text-xl font-light
-                        md:bg-light md:rounded-md md:border-2 md:border-blush-mid md:absolute md:top-16 md:py-2 ${showDropdown ? '' : 'md:hidden'}`}>
+                        md:bg-light md:rounded-md md:border-2 md:border-blush-mid md:fixed md:top-16 md:z-20 md:py-2 ${showDropdown ? '' : 'md:hidden'}`}>
                             <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                 <NavLink to={`/profile/${user.id}`} onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
                                     <span className="flex items-center mt-4 md:mt-0">
@@ -126,6 +134,16 @@ const MainNav = () => {
                                     </span>
                                 </NavLink>
                             </li>
+                            {user.is_admin &&
+                                <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
+                                    <NavLink to={`/admin`} onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
+                                        <span className="flex items-center mt-4 md:mt-0">
+                                            <Gear size={24} className="me-2" />
+                                            Administration
+                                        </span>
+                                    </NavLink>
+                                </li>
+                            }
                             {/* <li className="md:px-4 md:py-2 md:hover:bg-blush-mid">
                                 <NavLink to="/likedbooks" onClick={() => { toggleMobileMenu(); toggleDropdownMenu() }} className="hover:text-coral-vivid md:hover:text-dark">
                                     <span className="flex items-center mt-4 md:mt-0">
