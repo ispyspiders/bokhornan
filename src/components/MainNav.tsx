@@ -85,7 +85,7 @@ const MainNav = () => {
                     <div className="grid grid-cols-3 items-center px-11 md:pe-4 md:ps-0 text-sm md:flex">
                         {/* Inloggad användare i meny */}
                         {/* Som text för små skärmar */}
-                        <div className="my-2 ms-4 text-xl col-span-2  md:hidden">
+                        <div className="my-2 ms-4 text-xl col-span-2 md:hidden">
                             <span className="flex items-center">
                                 <UserCircle size={24} className="me-2" />
                                 {user.name}
@@ -100,7 +100,6 @@ const MainNav = () => {
                             aria-haspopup="true"
                             aria-expanded={showDropdown}
                             className="hidden my-2 ms-4 text-xl col-span-2 md:block  md:me-4 md:text-base"
-                            style={{ display: 'flex', alignItems: 'center' }} 
                         >
                             <span className="flex items-center">
                                 <UserCircle size={24} className="me-2" />
