@@ -52,7 +52,6 @@ const router = createBrowserRouter([
                 path: "/profile/:userId",
                 element: (
                     <ProfilePage />
-
                 )
             },
             {

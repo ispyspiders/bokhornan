@@ -7,6 +7,7 @@ import { Review } from '../types/review.types';
 import { url } from '../types/auth.types';
 import BookPageReview from '../components/BookPageReview';
 import defaultCover from '../assets/defaultCover.png'
+// import LikeButton from '../components/LikeButton';
 
 
 
@@ -146,7 +147,10 @@ const BookPage = () => {
                                 </p>
                             </div>
                             {/* Gilla-knapp */}
-                            {/* <LikeButton bookId={book.id} title={book.volumeInfo.title} thumbnail={book.volumeInfo?.imageLinks?.thumbnail || defaultCover} /> */}
+                            {/* <td>
+                                <LikeButton bookId={book.id} title={book.volumeInfo.title} thumbnail={book.volumeInfo?.imageLinks?.smallThumbnail || defaultCover} />
+
+                            </td> */}
                         </div>
 
                         <div className='flex flex-col-reverse lg:grid grid-cols-2 lg:gap-12'>
@@ -158,7 +162,7 @@ const BookPage = () => {
                             </div>
                             {/* Bild och detaljinfo */}
                             <div className='border-b border-blush-mid pb-8 sm:flex lg:flex-col lg:border-none'>
-                                    <img src={`${book?.volumeInfo?.imageLinks?.thumbnail || defaultCover}`} alt={`Omslag för ${book.volumeInfo.title}`} className='m-8 max-w-max max-h-max lg:ms-0' />
+                                <img src={`${book?.volumeInfo?.imageLinks?.thumbnail || defaultCover}`} alt={`Omslag för ${book.volumeInfo.title}`} className='m-8 max-w-max max-h-max lg:ms-0' />
                                 <div className='w-1/2 mt-8 lg:mt-0'>
                                     <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Utgiven: </span>{book.volumeInfo.publishedDate}</p>
                                     <p className='sm:w-1/2 lg:w-full'><span className='font-medium'>Format: </span>{book.volumeInfo.printType}</p>

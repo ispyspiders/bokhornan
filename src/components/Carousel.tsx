@@ -28,11 +28,11 @@ const Carousel: React.FC<CarouselProps> = ({ reviews }) => {
         >
           {reviews.map((review, index) => (
             <div
-              key={review.id}  // Se till att varje slide har en unik key (använd review.id här)
+              key={review.id}  
               className={`flex-shrink-0 ${index === 0 ? 'ms-12' : ''} ${
                 index === reviews.length - 1
-                  ? 'w-[calc(100%/1.5)]' 
-                  : 'w-[calc(100%/1.5)]' // Alla mellanliggande kort får bredden
+                  ? 'w-[calc(100%/1.5)]' // sista kortet
+                  : 'w-[calc(100%/1.5)]' // mellanliggande kort
               }`}
             >
               <ReviewCard review={review} />

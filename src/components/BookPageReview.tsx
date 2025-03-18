@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom"
 import { Review } from "../types/review.types"
 import StarRating from "./StarRating"
-
 
 interface BookPageReviewProps {
     review: Review
@@ -13,7 +13,7 @@ const BookPageReview = ({ review }: BookPageReviewProps) => {
 
             {/* Namn och publicerad */}
             <h4 className="font-serif font-bold mb-2 sm:mb-0">
-                {review.user_name}
+            <Link to={`/profile/${review.user_id}`} className="hover:underline">{review.user_name}</Link>
                 <span className="font-normal">, {review.created_at.slice(0, 10)}</span>
             </h4>
             {/* Betyg/Stärnor */}
