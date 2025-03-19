@@ -258,7 +258,7 @@ const EditProfilePage = () => {
 
                                 <div className='flex items-center justify-end'>
                                     {/* Radera knapp */}
-                                    <button type='button' onClick={() => setShowConfirmDelete(true)} className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-dark-soft hover:underline hover:bg-transparent'>
+                                    <button type='button' onClick={() => setShowConfirmDelete(true)} className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-red-800 hover:underline hover:bg-transparent'>
                                         Radera bild
                                     </button>
 
