@@ -11,7 +11,7 @@ interface LikedBookCardProps {
 const LikedBookCard = ({ thumbnail, title, bookId, readonly }: LikedBookCardProps) => {
 
     return (
-        <div className="bg-light rounded-lg p-4 drop-shadow-sm w-fit border-2 border-blush-deep font-montserrat max-w-40 w-40 flex flex-col justify-between items-start">
+        <div className="bg-light rounded-lg p-4 drop-shadow-sm w-fit border-2 border-blush-deep font-montserrat max-w-40 min-w-40 w-40! flex flex-col justify-between items-start">
             <div className="w-full">
                 <div className="min-h-32">
                 <img src={thumbnail} alt="Bookcover" className="max-h-32 mx-auto" />
