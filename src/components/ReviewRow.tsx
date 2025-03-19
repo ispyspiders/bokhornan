@@ -11,8 +11,7 @@ interface ReviewRowProps {
 const ReviewRow: React.FC<ReviewRowProps> = ({ review, onDeleteRequest }) => {
 
     const { user } = useAuth();
-    console.log(user?.id)
-    console.log(review.user_id)
+
     const isOwnProfile = user?.id == review.user_id; // Kollar om det är ens egen profil
 
 
