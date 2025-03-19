@@ -80,7 +80,7 @@ const BookPage = () => {
                 return reviews.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             case 'oldest':
                 return reviews.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-            case 'higestRating':
+            case 'highestRating':
                 return reviews.sort((a, b) => b.rating - a.rating);
             case 'lowestRating':
                 return reviews.sort((a, b) => a.rating - b.rating);
