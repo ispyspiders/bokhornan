@@ -26,7 +26,7 @@ const ReviewRow: React.FC<ReviewRowProps> = ({ review, onDeleteRequest }) => {
                 <StarRating rating={review.rating} readonly={true} size={24} />
             </td>
             <td>
-                { (isOwnProfile || user?.is_admin ) &&
+                { (isOwnProfile || user?.is_admin == 1 ) &&
                     <div className="flex justify-center items-center me-2">
 
                         <Link to={`/review/${review.id}`} className="font-semibold text-dark-soft hover:underline">Redigera</Link>
