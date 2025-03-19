@@ -53,25 +53,28 @@ const EditProfilePage = () => {
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-
+    
             const maxSize = 2 * 1024 * 1024; // 2MB
             if (file.size > maxSize) {
                 setErrors({ ...errors, avatar: "Filstorleken får inte överstiga 2MB" });
                 return;
             }
-
+    
             const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
             if (!allowedTypes.includes(file.type)) {
                 setErrors({ ...errors, avatar: "Endast JPEG, JPG, PNG eller GIF tillåts" });
                 return;
             }
-
-            setErrors({ ...errors, avatar: '' }); // nollställ tidigare felmeddelanden
-
+    
+            setErrors({ ...errors, avatar: '' }); // Rensa tidigare felmeddelanden
+    
+            // Uppdatera både formData och avatarPreview direkt
             setFormData({ ...formData, avatar: file });
+            
+            // Läs in den nya filen och uppdatera förhandsgranskningen
             const fileReader = new FileReader();
             fileReader.onloadend = () => {
-                setAvatarPreview(fileReader.result as string);
+                setAvatarPreview(fileReader.result as string); // Uppdaterar förhandsgranskningen
             };
             fileReader.readAsDataURL(file);
         }
@@ -252,7 +255,7 @@ const EditProfilePage = () => {
                     {/* Profilbild */}
                     <div className='mb-4 flex flex-col w-fit'>
                         <span className="text-sm mb-2 font-light">Profilbild</span>
-                        {avatarPreview && !formData.avatar ? (
+                        {avatarPreview ? (
                             <div>
                                 <img src={avatarPreview} alt="Avatar" className='w-56 h-56 object-cover' />
 
@@ -283,14 +286,13 @@ const EditProfilePage = () => {
                                     className='m-0 p-0 mt-2 bg-transparent text-sm font-montserrat font-semibold text-dark-soft hover:underline hover:bg-transparent'>
                                     {showFileInput ? 'Avbryt uppladdning' : 'Uppdatera profilbild'}
                                 </button>
-
-                                {showFileInput && (
+                            </div>
+                        )}
+                          {showFileInput && (
                                     <div className='mt-4 p-2 bg-white rounded border border-blush-mid w-full max-w-56'>
                                         <input type="file" name="avatar" id="avatar" accept='image/*' onChange={handleAvatarChange} className='' />
                                     </div>
                                 )}
-                            </div>
-                        )}
                         {
                             errors.avatar && <span className="text-sm font-light mt-2 ms-2 text-red-500">{errors.avatar}</span>
                         }
