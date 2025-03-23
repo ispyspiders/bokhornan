@@ -255,6 +255,7 @@ const EditProfilePage = () => {
                     {/* Profilbild */}
                     <div className='mb-4 flex flex-col w-fit'>
                         <span className="text-sm mb-2 font-light">Profilbild</span>
+                        {/* Om avatar preview */}
                         {avatarPreview ? (
                             <div>
                                 <img src={avatarPreview} alt="Avatar" className='w-56 h-56 object-cover' />
@@ -278,6 +279,7 @@ const EditProfilePage = () => {
 
                             </div>
                         ) : (
+                            // Om ingen preview
                             <div className='flex flex-col items-end'>
                                 <div className='bg-blush-light rounded flex justify-center items-center w-56 h-56'>
                                     <UserCircle size={200} weight='duotone' className='text-blush-deep' />
@@ -288,6 +290,7 @@ const EditProfilePage = () => {
                                 </button>
                             </div>
                         )}
+                        {/* Visa  */}
                           {showFileInput && (
                                     <div className='mt-4 p-2 bg-white rounded border border-blush-mid w-full max-w-56'>
                                         <input type="file" name="avatar" id="avatar" accept='image/*' onChange={handleAvatarChange} className='' />

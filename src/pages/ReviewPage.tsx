@@ -178,8 +178,7 @@ const ReviewPage = () => {
 
 
                     <div className="w-full flex justify-end">
-                        <button type="button" onClick={() => navigate(-1)} className="bg-blush-mid m-0 mt-4 me-8 px-4 hover:bg-opacity-80"
-                        >
+                        <button type="button" onClick={() => navigate(-1)} className="bg-blush-mid m-0 mt-4 me-8 px-4 hover:bg-opacity-80">
                             Avbryt
                         </button>
 

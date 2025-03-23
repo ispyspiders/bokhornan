@@ -35,4 +35,4 @@ export interface AuthContextType {
     updateUser: (updatedUser: User) => void
 }
 
-export const url = "https://bokhornan-service.azurewebsites.net/api"
+export const url = "https://bookhornenapi.onrender.com/api"
